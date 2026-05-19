@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Galer — Galería 3D Cinematográfica Premium
 
-## Getting Started
+Exposición digital con **galería 3D CSS**, **WebGL**, **Sanity CMS** (edición sin código), **Supabase** (auth, realtime, analytics) y **panel admin** con live preview.
 
-First, run the development server:
+## Experiencia frontend
+
+| Sección | Descripción |
+|---------|-------------|
+| **Hero 3D** | Salas con perspective CSS, tilt con mouse, navegación entre rooms |
+| **Masonry** | Grid dinámica, filtros por categoría, reveal con ScrollTrigger |
+| **Videos** | Cinema fullscreen, lightbox con soporte video |
+| **WebGL** | Partículas + escultura wireframe (R3F) |
+| **Destacadas** | Galerías curadas |
+| **Cursor** | Glow, labels dinámicos (VIEW, OPEN, PLAY…) |
+| **Scroll** | Lenis + GSAP ScrollTrigger |
+| **Lightbox** | Blur, zoom, navegación, video |
+| **Menú** | Fullscreen con timelines GSAP |
+| **Footer** | Terminal ticker + sweep animado |
+
+## Panel admin
+
+| Ruta | Función |
+|------|---------|
+| `/admin/login` | Email, magic link, Google, GitHub |
+| `/admin` | Dashboard + stats Supabase |
+| `/admin/contenido` | Acceso rápido al CMS |
+| `/admin/preview` | **Live preview** iframe (`?preview=true`) |
+| `/admin/galerias` | Supabase + Sanity + **drag & drop** orden |
+| `/admin/usuarios` | Roles admin/editor/viewer |
+| `/admin/analytics` | Eventos personalizados |
+| `/studio` | **Sanity Studio** embebido |
+
+## CMS (Sanity)
+
+Schemas en `sanity/schemas/`:
+
+- `siteSettings` — hero 3D, tagline, secciones activas
+- `gallery` — imágenes, categorías, orden
+- `video` — videos inmersivos
+- `category` — filtros masonry
+- `section` — bloques dinámicos
+
+## Inicio rápido
 
 ```bash
+npm install
+cp .env.example .env.local
+# Configura Supabase + Sanity en .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Supabase
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Ejecuta `supabase/migrations/001_initial_schema.sql`
+2. Activa Auth providers + redirect `http://localhost:3000/auth/callback`
+3. Promueve admin: `UPDATE public.users SET role = 'admin' WHERE email = 'tu@email.com';`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Sanity
 
-## Learn More
+1. Crea proyecto en sanity.io
+2. Añade variables en `.env.local`
+3. Abre `/studio` para editar contenido
+4. Usa `/admin/preview` para ver cambios en vivo (poll cada 8s + botón Refrescar)
 
-To learn more about Next.js, take a look at the following resources:
+### Variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SANITY_PROJECT_ID=
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_API_TOKEN=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Arquitectura
 
-## Deploy on Vercel
+```
+Admin → Sanity Studio (/studio) + Panel (/admin)
+              ↓
+        Sanity CMS (contenido visual)
+              ↓
+        Supabase (auth, likes, analytics, metadatos)
+              ↓
+        Next.js (3D, WebGL, animaciones, live preview)
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js 16 · React 19 · TypeScript · Tailwind 4 · GSAP · Framer Motion · Lenis · Three.js · Sanity · Supabase
