@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { FullscreenMenu } from "./fullscreen-menu";
 
-export function SiteHeader({ siteTitle = "Galer" }: { siteTitle?: string }) {
+export function SiteHeader({ siteTitle = "Arte de la transformación" }: { siteTitle?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (

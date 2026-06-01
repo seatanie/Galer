@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS public.site_settings (
   tagline TEXT DEFAULT 'Exposición digital cinematográfica',
   hero_title TEXT DEFAULT 'Experiencias inmersivas',
   hero_subtitle TEXT,
+  intro_subtitle TEXT,
   sections TEXT[] DEFAULT ARRAY['hero','masonry','videos','webgl','featured'],
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

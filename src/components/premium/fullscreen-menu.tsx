@@ -6,7 +6,7 @@ import { gsap } from "@/animations/register-gsap";
 
 const links = [
   { href: "/#hero", label: "Home" },
-  { href: "/#intro", label: "Introducción" },
+  { href: "/#intro", label: "Proyecto" },
   { href: "/#modelos", label: "Modelos" },
   { href: "/admin", label: "Admin" },
 ];

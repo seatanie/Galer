@@ -35,6 +35,16 @@ export interface GalleryItem {
   title: string | null;
   description: string | null;
   order_index: number;
+  slot_id: string | null;
+  created_at: string;
+}
+
+export interface GallerySlot {
+  id: string;
+  gallery_id: string;
+  slot_index: number;
+  cover_image_url: string | null;
+  title: string | null;
   created_at: string;
 }
 

@@ -12,12 +12,15 @@ import {
   deleteModelAudio,
 } from "@/lib/supabase/content-actions";
 import { MediaUpload } from "./media-upload";
+import { ModelSlotsEditor } from "./ModelSlotsEditor";
+
 import { Trash2, Layers, Image as ImageIcon, Pencil, X, Music, Plus, Upload } from "lucide-react";
 import type { HeroRoom, ModelImage, ModelAudio } from "@/types/supabase-content";
 
 interface RoomWithExtras extends HeroRoom {
   model_images?: ModelImage[];
   model_audios?: ModelAudio[];
+  model_slots?: any[];
 }
 
 interface Props {
@@ -137,7 +140,8 @@ export function HeroRoomForm({ rooms }: Props) {
           )}
         </div>
 
-        <input name="title" required defaultValue={editing?.title ?? ""} placeholder="Nombre del modelo" className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30" />
+        <input name="title" required defaultValue={editing?.title ?? ""} placeholder="Nombre del modelo (título principal)" className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30" />
+        <input name="short_title" defaultValue={editing?.short_title ?? ""} placeholder="Subtítulo debajo de la bolita (opcional)" className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30" />
         <textarea name="description" defaultValue={editing?.description ?? ""} placeholder="Historia / descripción del modelo" rows={3} className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30" />
         <div className="flex items-center gap-2">
           <input name="accent_color" type="color" defaultValue={editing?.accent_color ?? "#8b5cf6"} className="h-12 w-16 cursor-pointer rounded-lg border border-white/10 bg-black/40" />
@@ -156,34 +160,20 @@ export function HeroRoomForm({ rooms }: Props) {
         {error && <p className="text-sm text-rose-400">{error}</p>}
       </form>
 
-      {/* ─── Collage de imágenes (solo en edición) ─── */}
+      {/* ─── Slots / Carrusel (reemplaza collage) ─── */}
       {editing && (
         <div className="max-w-xl space-y-4 rounded-2xl border border-white/10 bg-white/5 p-6">
           <h3 className="flex items-center gap-2 text-sm font-medium text-white/70">
             <ImageIcon className="h-4 w-4 text-violet-400" />
-            Collage de imágenes
+            Carruseles (3 slots)
           </h3>
-          <div className="flex gap-2">
-            <input value={collageUrl} onChange={(e) => setCollageUrl(e.target.value)} placeholder="URL de imagen para el collage" className="flex-1 rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30" />
-          </div>
-          <input value={collageCaption} onChange={(e) => setCollageCaption(e.target.value)} placeholder="Texto opcional para esta imagen" className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30" />
-          <button type="button" onClick={handleAddCollageImage} className="flex items-center gap-2 rounded-lg border border-violet-500/30 bg-violet-500/10 px-4 py-2 text-sm text-violet-300 hover:bg-violet-500/20">
-            <Plus className="h-4 w-4" /> Agregar imagen al collage
-          </button>
-
-          {currentImages.length > 0 && (
-            <div className="grid grid-cols-3 gap-2">
-              {currentImages.map((img) => (
-                <div key={img.id} className="group relative aspect-square overflow-hidden rounded-lg">
-                  <img src={img.image_url} alt="" className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 flex items-center justify-center gap-2 bg-black/60 opacity-0 transition-opacity group-hover:opacity-100">
-                    <button type="button" onClick={() => handleDeleteCollageImage(img.id)} className="rounded-full bg-rose-500/80 p-1"><Trash2 className="h-3 w-3 text-white" /></button>
-                  </div>
-                  {img.caption && <p className="absolute bottom-0 left-0 right-0 bg-black/60 p-1 text-[10px] text-white/80">{img.caption}</p>}
-                </div>
-              ))}
-            </div>
-          )}
+          <p className="text-xs text-white/40">
+            Cada slot es una columna con su propio carrusel de fotos.
+          </p>
+          <ModelSlotsEditor
+            heroRoomId={editing.id}
+            slots={(editing as any).model_slots ?? []}
+          />
         </div>
       )}
 

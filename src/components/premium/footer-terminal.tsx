@@ -32,7 +32,7 @@ export function FooterTerminal() {
       </div>
       <div className="relative mx-auto flex max-w-6xl flex-col items-center justify-between gap-8 px-6 pt-12 md:flex-row">
         <p className="font-mono text-xs text-white/30">
-          © {new Date().getFullYear()} GALER — Exposición digital
+          © {new Date().getFullYear()} Arte de la transformación — Exposición digital
         </p>
         <nav className="flex gap-8 font-mono text-xs tracking-widest">
           <Link href="/admin" data-cursor className="text-white/50 hover:text-violet-300">

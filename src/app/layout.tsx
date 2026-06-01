@@ -22,7 +22,7 @@ const sourceCode = Source_Code_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Galer — Galería Cinematográfica 3D",
+  title: "Arte de la transformación",
   description:
     "Exposición digital premium con galería 3D, Sanity CMS, Supabase realtime y experiencia Awwwards.",
 };

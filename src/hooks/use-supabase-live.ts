@@ -32,6 +32,9 @@ export function useSupabaseLive(initialData: HomePageData, enabled = true) {
       .on("postgres_changes", { event: "*", schema: "public", table: "site_settings" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "hero_rooms" }, refresh)
       .on("postgres_changes", { event: "*", schema: "public", table: "hero_slides" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "model_images" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "model_audios" }, refresh)
+      .on("postgres_changes", { event: "*", schema: "public", table: "model_slots" }, refresh)
       .subscribe();
 
     const onMessage = (e: MessageEvent) => {

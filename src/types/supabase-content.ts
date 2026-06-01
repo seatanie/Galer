@@ -5,6 +5,7 @@ export interface SiteSettings {
   hero_title: string | null;
   hero_subtitle: string | null;
   intro_title: string | null;
+  intro_subtitle: string | null;
   intro_text: string | null;
   sections: string[] | null;
   updated_at: string;
@@ -13,6 +14,7 @@ export interface SiteSettings {
 export interface HeroRoom {
   id: string;
   title: string;
+  short_title: string | null;
   description: string | null;
   image_url: string | null;
   accent_color: string | null;
@@ -54,6 +56,7 @@ export interface GalleryRow {
   created_at: string;
   category?: Category | null;
   gallery_items?: GalleryItemRow[];
+  gallery_slots?: GallerySlotRow[];
 }
 
 export interface GalleryItemRow {
@@ -63,8 +66,20 @@ export interface GalleryItemRow {
   video_url: string | null;
   media_type: string;
   title: string | null;
+  short_title: string | null;
   description: string | null;
   order_index: number;
+  slot_id: string | null;
+}
+
+export interface GallerySlotRow {
+  id: string;
+  gallery_id: string;
+  slot_index: number;
+  cover_image_url: string | null;
+  title: string | null;
+  created_at: string;
+  gallery_items?: GalleryItemRow[];
 }
 
 export interface VideoRow {
@@ -102,6 +117,7 @@ export interface HeroSlide {
   id: string;
   image_url: string;
   title: string | null;
+  short_title: string | null;
   description: string | null;
   order_index: number;
 }

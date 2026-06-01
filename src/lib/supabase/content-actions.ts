@@ -143,6 +143,167 @@ export async function deleteModelAudio(hero_room_id: string) {
   return { success: true };
 }
 
+// ─── Gallery Slots ────────────────────────────────────────────
+
+export async function upsertGallerySlot(formData: FormData) {
+  const supabase = await createClient();
+  const gallery_id = formData.get("gallery_id") as string;
+  const slot_index = parseInt(formData.get("slot_index") as string);
+  const cover_image_url = (formData.get("cover_image_url") as string) || undefined;
+  const title = (formData.get("title") as string) || undefined;
+
+  const payload: Record<string, unknown> = { gallery_id, slot_index };
+  if (cover_image_url !== undefined) payload.cover_image_url = cover_image_url;
+  if (title !== undefined) payload.title = title;
+
+  const { data, error } = await supabase
+    .from("gallery_slots")
+    .upsert(payload, { onConflict: "gallery_id,slot_index" })
+    .select("id")
+    .single();
+
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true, id: data.id };
+}
+
+export async function addSlotItem(formData: FormData) {
+  const supabase = await createClient();
+  const slot_id = formData.get("slot_id") as string;
+  const image_url = formData.get("image_url") as string;
+  const title = (formData.get("title") as string) || null;
+
+  const { data: slot } = await supabase
+    .from("gallery_slots")
+    .select("gallery_id")
+    .eq("id", slot_id)
+    .single();
+
+  if (!slot) return { error: "Slot no encontrado" };
+
+  const { count } = await supabase
+    .from("gallery_items")
+    .select("*", { count: "exact", head: true })
+    .eq("slot_id", slot_id);
+
+  const { error } = await supabase.from("gallery_items").insert({
+    gallery_id: slot.gallery_id,
+    slot_id,
+    image_url,
+    title,
+    media_type: "image",
+    order_index: count ?? 0,
+  });
+
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function deleteSlotItem(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("gallery_items").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function deleteGallerySlot(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("gallery_slots").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+// ─── Model Slots ──────────────────────────────────────────────
+
+export async function upsertModelSlot(formData: FormData) {
+  const supabase = await createClient();
+  const hero_room_id = formData.get("hero_room_id") as string;
+  const slot_index = parseInt(formData.get("slot_index") as string);
+  const cover_image_url = (formData.get("cover_image_url") as string) || undefined;
+  const title = (formData.get("title") as string) || undefined;
+
+  const payload: Record<string, unknown> = { hero_room_id, slot_index };
+  if (cover_image_url !== undefined) payload.cover_image_url = cover_image_url;
+  if (title !== undefined) payload.title = title;
+
+  const { data, error } = await supabase
+    .from("model_slots")
+    .upsert(payload, { onConflict: "hero_room_id,slot_index" })
+    .select("id")
+    .single();
+
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true, id: data.id };
+}
+
+export async function addModelSlotItem(formData: FormData) {
+  const supabase = await createClient();
+  const slot_id = formData.get("slot_id") as string;
+  const image_url = formData.get("image_url") as string;
+  const caption = (formData.get("caption") as string) || null;
+
+  // Obtener hero_room_id del slot
+  const { data: slot } = await supabase
+    .from("model_slots")
+    .select("hero_room_id")
+    .eq("id", slot_id)
+    .single();
+
+  if (!slot) return { error: "Slot no encontrado" };
+
+  const { count } = await supabase
+    .from("model_images")
+    .select("*", { count: "exact", head: true })
+    .eq("slot_id", slot_id);
+
+  const { error } = await supabase.from("model_images").insert({
+    hero_room_id: slot.hero_room_id,
+    slot_id,
+    image_url,
+    caption,
+    order_index: count ?? 0,
+  });
+
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function deleteModelSlotItem(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("model_images").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function updateModelSlotItem(formData: FormData) {
+  const supabase = await createClient();
+  const item_id = formData.get("item_id") as string;
+  const caption = (formData.get("caption") as string) || null;
+
+  const { error } = await supabase
+    .from("model_images")
+    .update({ caption })
+    .eq("id", item_id);
+
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function deleteModelSlot(id: string) {
+  const supabase = await createClient();
+  const { error } = await supabase.from("model_slots").delete().eq("id", id);
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
 export async function addGalleryItem(formData: FormData) {
   const supabase = await createClient();
   const gallery_id = formData.get("gallery_id") as string;
@@ -173,6 +334,7 @@ export async function addGalleryItem(formData: FormData) {
 export async function createHeroRoom(formData: FormData) {
   const supabase = await createClient();
   const title = formData.get("title") as string;
+  const short_title = (formData.get("short_title") as string) || null;
   const description = (formData.get("description") as string) || null;
   const image_url = (formData.get("image_url") as string) || null;
   const accent_color = (formData.get("accent_color") as string) || null;
@@ -180,6 +342,7 @@ export async function createHeroRoom(formData: FormData) {
 
   const { error } = await supabase.from("hero_rooms").insert({
     title,
+    short_title,
     description,
     image_url,
     accent_color,
@@ -194,6 +357,7 @@ export async function createHeroRoom(formData: FormData) {
 export async function updateHeroRoom(id: string, formData: FormData) {
   const supabase = await createClient();
   const title = formData.get("title") as string;
+  const short_title = (formData.get("short_title") as string) || null;
   const description = (formData.get("description") as string) || null;
   const image_url = (formData.get("image_url") as string) || null;
   const accent_color = (formData.get("accent_color") as string) || null;
@@ -201,7 +365,7 @@ export async function updateHeroRoom(id: string, formData: FormData) {
 
   const { error } = await supabase
     .from("hero_rooms")
-    .update({ title, description, image_url, accent_color, order_index })
+    .update({ title, short_title, description, image_url, accent_color, order_index })
     .eq("id", id);
 
   if (error) return { error: error.message };
@@ -221,16 +385,48 @@ export async function createHeroSlide(formData: FormData) {
   const supabase = await createClient();
   const image_url = formData.get("image_url") as string;
   const title = (formData.get("title") as string) || null;
+  const short_title = (formData.get("short_title") as string) || null;
   const description = (formData.get("description") as string) || null;
   const order_index = parseInt(formData.get("order_index") as string) || 0;
 
   const { error } = await supabase.from("hero_slides").insert({
     image_url,
     title,
+    short_title,
     description,
     order_index,
   });
 
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function updateHeroSlide(id: string, formData: FormData) {
+  const supabase = await createClient();
+  const image_url = formData.get("image_url") as string;
+  const title = (formData.get("title") as string) || null;
+  const short_title = (formData.get("short_title") as string) || null;
+  const description = (formData.get("description") as string) || null;
+  const order_index = parseInt(formData.get("order_index") as string) || 0;
+
+  const { error } = await supabase
+    .from("hero_slides")
+    .update({ image_url, title, short_title, description, order_index })
+    .eq("id", id);
+
+  if (error) return { error: error.message };
+  revalidateAll();
+  return { success: true };
+}
+
+export async function reorderHeroSlides(orderedIds: string[]) {
+  const supabase = await createClient();
+  const updates = orderedIds.map((id, index) =>
+    supabase.from("hero_slides").update({ order_index: index }).eq("id", id)
+  );
+  const results = await Promise.all(updates);
+  const error = results.find((r) => r.error)?.error;
   if (error) return { error: error.message };
   revalidateAll();
   return { success: true };
@@ -257,6 +453,7 @@ export async function updateSiteSettings(formData: FormData) {
       hero_title: formData.get("hero_title") as string,
       hero_subtitle: formData.get("hero_subtitle") as string,
       intro_title: formData.get("intro_title") as string,
+      intro_subtitle: formData.get("intro_subtitle") as string,
       intro_text: formData.get("intro_text") as string,
       sections,
       updated_at: new Date().toISOString(),
@@ -267,3 +464,4 @@ export async function updateSiteSettings(formData: FormData) {
   revalidateAll();
   return { success: true };
 }
+

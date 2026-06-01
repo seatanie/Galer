@@ -10,6 +10,7 @@ import type {
 export interface Hero3DRoomExtended extends HeroRoom {
   model_images?: ModelImage[];
   model_audios?: ModelAudio[];
+  model_slots?: any[];
 }
 
 export function mapGalleryToDisplay(g: GalleryRow): DisplayGallery {
@@ -42,10 +43,22 @@ export function mapGalleryToDisplay(g: GalleryRow): DisplayGallery {
 export function mapHeroRoomsFor3D(rooms: Hero3DRoomExtended[]) {
   return rooms.map((r) => ({
     title: r.title,
+    shortTitle: r.short_title ?? undefined,
     description: r.description ?? undefined,
     accentColor: r.accent_color ?? "#8b5cf6",
     wallImageUrl: r.image_url ?? undefined,
-    modelImages: (r.model_images ?? []).map((img) => ({
+    modelSlots: (r.model_slots ?? []).sort((a: any, b: any) => a.slot_index - b.slot_index).map((slot: any) => ({
+      id: slot.id,
+      slotIndex: slot.slot_index,
+      coverImageUrl: slot.cover_image_url ?? undefined,
+      title: slot.title ?? undefined,
+      items: (slot.model_images ?? []).sort((a: any, b: any) => a.order_index - b.order_index).map((img: any) => ({
+        id: img.id,
+        image_url: img.image_url,
+        caption: img.caption,
+      })),
+    })),
+    modelImages: (r.model_images ?? []).map((img: any) => ({
       id: img.id,
       image_url: img.image_url,
       caption: img.caption,
@@ -67,7 +80,7 @@ export function slugify(text: string) {
 
 export function mapSettingsForHero(settings: SiteSettings | null) {
   return {
-    siteTitle: settings?.site_title ?? "Galer",
+    siteTitle: settings?.site_title ?? "Arte de la transformación",
     tagline: settings?.tagline ?? undefined,
     heroTitle: settings?.hero_title ?? undefined,
     heroSubtitle: settings?.hero_subtitle ?? undefined,

@@ -11,7 +11,7 @@ export default async function AdminContenidoPage() {
   const { data: settings } = await supabase.from("site_settings").select("*").eq("id", 1).maybeSingle();
   const { data: rooms } = await supabase
     .from("hero_rooms")
-    .select("*, model_images(*), model_audios(*)")
+    .select("*, model_images(*), model_audios(*), model_slots(*, model_images(*))")
     .order("order_index");
   const { data: slides } = await supabase.from("hero_slides").select("*").order("order_index");
 
@@ -96,17 +96,23 @@ export default async function AdminContenidoPage() {
             placeholder="Subtítulo hero"
             className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
           />
-          <h3 className="mt-6 text-sm font-medium text-white/50">Introducción</h3>
+          <h3 className="mt-6 text-sm font-medium text-white/50">Subtítulo y texto</h3>
           <input
             name="intro_title"
             defaultValue={settings?.intro_title ?? ""}
-            placeholder="Título de introducción"
+            placeholder="Título principal"
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <input
+            name="intro_subtitle"
+            defaultValue={settings?.intro_subtitle ?? ""}
+            placeholder="Subtítulo"
             className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
           />
           <textarea
             name="intro_text"
             defaultValue={settings?.intro_text ?? ""}
-            placeholder="Texto de introducción"
+            placeholder="Texto"
             rows={3}
             className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
           />

@@ -16,7 +16,7 @@ export default async function AdminUsersPage() {
       <h1 className="mb-2 text-3xl font-light text-white">Usuarios</h1>
       <p className="mb-10 text-white/50">Gestión de roles: admin, editor, viewer</p>
 
-      <div className="overflow-hidden rounded-xl border border-white/10">
+      <div className="rounded-xl border border-white/10">
         <table className="w-full text-left text-sm">
           <thead className="border-b border-white/10 bg-white/5">
             <tr>

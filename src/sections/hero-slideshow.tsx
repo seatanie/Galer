@@ -24,7 +24,7 @@ export function HeroSlideshow({ slides, tagline }: HeroSlideshowProps) {
     return (
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6">
         <p className="text-center font-serif text-5xl font-light text-white/40 md:text-8xl">
-          Galer<span className="text-violet-400">.</span>
+          Arte de la transformación
         </p>
       </section>
     );
@@ -80,7 +80,7 @@ export function HeroSlideshow({ slides, tagline }: HeroSlideshowProps) {
           </motion.div>
         </AnimatePresence>
 
-        {/* Indicadores */}
+        {/* Indicadores con nombre */}
         {slides.length > 1 && (
           <div className="mt-12 flex items-center justify-center gap-3">
             <button
@@ -89,15 +89,37 @@ export function HeroSlideshow({ slides, tagline }: HeroSlideshowProps) {
             >
               <ChevronLeft className="h-4 w-4 text-white" />
             </button>
-            <div className="flex gap-2">
-              {slides.map((_, i) => (
+            <div className="flex items-end gap-4">
+              {slides.map((s, i) => (
                 <button
                   key={i}
                   onClick={() => setIndex(i)}
-                  className={`h-2 rounded-full transition-all ${
-                    i === index ? "w-8 bg-white" : "w-2 bg-white/40 hover:bg-white/60"
-                  }`}
-                />
+                  className="flex flex-col items-center gap-1 transition-all"
+                >
+                  {s.short_title && (
+                    <span
+                      className={`whitespace-nowrap text-[11px] font-medium leading-tight transition-all ${
+                        i === index ? "text-white/80" : "text-white/30"
+                      }`}
+                    >
+                      {s.short_title}
+                    </span>
+                  )}
+                  <div
+                    className={`rounded-full transition-all ${
+                      i === index ? "h-2 w-8 bg-white" : "h-2 w-2 bg-white/40 hover:bg-white/60"
+                    }`}
+                  />
+                  {s.description && (
+                    <span
+                      className={`whitespace-nowrap text-[10px] leading-tight transition-all ${
+                        i === index ? "text-white/50" : "text-white/20"
+                      }`}
+                    >
+                      {s.description}
+                    </span>
+                  )}
+                </button>
               ))}
             </div>
             <button

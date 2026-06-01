@@ -29,7 +29,7 @@ export function AdminSidebar() {
   return (
     <aside className="flex w-64 flex-col border-r border-white/10 bg-black/40 p-6 backdrop-blur-xl">
       <Link href="/admin" className="mb-10 text-xl font-light tracking-widest text-white">
-        GALER<span className="text-violet-400">.</span>
+        ARTE DE LA TRANSFORMACIÓN
       </Link>
       <nav className="flex flex-1 flex-col gap-1">
         {links.map(({ href, label, icon: Icon }) => (

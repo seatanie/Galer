@@ -4,7 +4,7 @@ import type { HomePageData } from "./types";
 
 export const defaultHomeData: HomePageData = {
   settings: {
-    siteTitle: "Galer",
+    siteTitle: "Arte de la transformación",
     tagline: "Exposición digital cinematográfica",
     heroTitle: "Experiencias inmersivas",
     heroSubtitle:

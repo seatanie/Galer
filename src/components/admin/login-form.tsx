@@ -5,15 +5,12 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   signInWithEmail,
-  signUpWithEmail,
   signInWithMagicLink,
   resetPassword,
-  signInWithGoogle,
-  signInWithGithub,
 } from "@/lib/auth/actions";
 import { MagneticButton } from "@/components/premium/magnetic-button";
 
-type AuthMode = "login" | "register" | "magic" | "reset";
+type AuthMode = "login" | "magic" | "reset";
 
 export function LoginForm() {
   const router = useRouter();
@@ -33,7 +30,6 @@ export function LoginForm() {
 
     let result;
     if (mode === "login") result = await signInWithEmail(formData);
-    else if (mode === "register") result = await signUpWithEmail(formData);
     else if (mode === "magic") result = await signInWithMagicLink(formData);
     else result = await resetPassword(formData);
 
@@ -61,16 +57,15 @@ export function LoginForm() {
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-md rounded-2xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl"
     >
-      <h1 className="mb-2 text-2xl font-light text-white">Panel Admin</h1>
+      <h1 className="mb-2 text-2xl font-light text-white">Arte de la transformación</h1>
       <p className="mb-8 text-sm text-white/50">
-        Autenticación 100% Supabase Auth
+        Acceso al panel de administración
       </p>
 
-      <div className="mb-6 grid grid-cols-2 gap-2">
+      <div className="mb-6 grid grid-cols-3 gap-2">
         {(
           [
             ["login", "Entrar"],
-            ["register", "Registro"],
             ["magic", "Magic link"],
             ["reset", "Recuperar"],
           ] as const
@@ -97,7 +92,7 @@ export function LoginForm() {
           placeholder="email@ejemplo.com"
           className="w-full rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/30 focus:border-violet-500/50 focus:outline-none"
         />
-        {(mode === "login" || mode === "register") && (
+        {mode === "login" && (
           <input
             name="password"
             type="password"
@@ -108,31 +103,12 @@ export function LoginForm() {
           />
         )}
         <MagneticButton type="submit" disabled={pending} className="w-full">
-          {pending ? "Procesando..." : mode === "login" ? "Iniciar sesión" : mode === "register" ? "Crear cuenta" : mode === "magic" ? "Enviar magic link" : "Enviar enlace de recuperación"}
+          {pending ? "Procesando..." : mode === "login" ? "Iniciar sesión" : mode === "magic" ? "Enviar magic link" : "Enviar enlace de recuperación"}
         </MagneticButton>
       </form>
 
       {error && <p className="mt-4 text-sm text-rose-400">{error}</p>}
       {message && <p className="mt-4 text-sm text-emerald-400">{message}</p>}
-
-      <div className="my-8 flex items-center gap-4">
-        <div className="h-px flex-1 bg-white/10" />
-        <span className="text-xs text-white/40">OAuth Supabase</span>
-        <div className="h-px flex-1 bg-white/10" />
-      </div>
-
-      <div className="flex gap-3">
-        <form action={signInWithGoogle} className="flex-1">
-          <MagneticButton type="submit" className="w-full text-sm">
-            Google
-          </MagneticButton>
-        </form>
-        <form action={signInWithGithub} className="flex-1">
-          <MagneticButton type="submit" className="w-full text-sm">
-            GitHub
-          </MagneticButton>
-        </form>
-      </div>
     </motion.div>
   );
 }

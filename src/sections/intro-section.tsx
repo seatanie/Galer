@@ -5,10 +5,11 @@ import { gsap, ScrollTrigger } from "@/animations/register-gsap";
 
 interface IntroSectionProps {
   title?: string | null;
+  subtitle?: string | null;
   text?: string | null;
 }
 
-export function IntroSection({ title, text }: IntroSectionProps) {
+export function IntroSection({ title, subtitle, text }: IntroSectionProps) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -40,6 +41,14 @@ export function IntroSection({ title, text }: IntroSectionProps) {
           >
             {title}
           </h2>
+        )}
+        {subtitle && (
+          <p
+            data-intro
+            className="mx-auto mb-6 max-w-2xl text-sm uppercase tracking-[0.28em] text-white/40"
+          >
+            {subtitle}
+          </p>
         )}
         {text && (
           <p

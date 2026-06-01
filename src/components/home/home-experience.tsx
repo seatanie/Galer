@@ -35,6 +35,7 @@ export function HomeExperience({ initialData, livePreview = false }: HomeExperie
         {sections.includes("intro") && (
           <IntroSection
             title={data.settings?.intro_title}
+            subtitle={data.settings?.intro_subtitle}
             text={data.settings?.intro_text}
           />
         )}
