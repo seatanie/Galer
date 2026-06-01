@@ -130,6 +130,11 @@ export function Hero3DGallery({
                     style={{ zIndex: isCenter ? 20 : 10 - Math.abs(position) }}
                     onClick={() => handleModelClick(i)}
                   >
+                    {isCenter && (
+                      <p className="mb-4 text-center font-serif text-2xl text-white drop-shadow-lg">
+                        {room.title}
+                      </p>
+                    )}
                     <div
                       className="relative overflow-hidden rounded-full border-2 shadow-2xl"
                       style={{
@@ -158,38 +163,9 @@ export function Hero3DGallery({
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     </div>
-
-                    {!isCenter && (
-                      <p className="mt-3 text-center text-xs text-white/50">{room.title}</p>
-                    )}
                   </motion.div>
                 );
               })}
-            </AnimatePresence>
-
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="pointer-events-none absolute -bottom-4 left-0 right-0 text-center"
-              >
-                {displayRooms[activeIndex].shortTitle ? (
-                  <>
-                    <p className="font-serif text-4xl text-white drop-shadow-lg">
-                      {displayRooms[activeIndex].shortTitle}
-                    </p>
-                    <p className="mt-2 text-sm text-white/60">
-                      {displayRooms[activeIndex].title}
-                    </p>
-                  </>
-                ) : (
-                  <p className="font-serif text-4xl text-white drop-shadow-lg">
-                    {displayRooms[activeIndex].title}
-                  </p>
-                )}
-              </motion.div>
             </AnimatePresence>
           </div>
 
