@@ -198,7 +198,7 @@ export default async function AdminContenidoPage() {
       <section>
         <h2 className="mb-4 flex items-center gap-2 text-lg text-white">
           <Layers className="h-5 w-5 text-violet-400" />
-          Modelos (Hero Rooms)
+          Personajes
         </h2>
         <HeroRoomForm rooms={(rooms ?? []) as any} />
       </section>
