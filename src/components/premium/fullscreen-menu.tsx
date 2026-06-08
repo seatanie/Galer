@@ -26,7 +26,7 @@ const links: LinkItem[] = [
       { href: "/#intro", label: "Manifiesto" },
     ],
   },
-  { href: "/#modelos", label: "Personajes" },
+  { href: "/#personajes", label: "Personajes" },
   { href: "/admin", label: "Admin" },
 ];
 

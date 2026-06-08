@@ -16,7 +16,7 @@ interface HomeExperienceProps {
 
 export function HomeExperience({ initialData, livePreview = false }: HomeExperienceProps) {
   const { data } = useSupabaseLive(initialData, livePreview || true);
-  const sections = ["hero", "intro", "modelos"];
+  const sections = ["hero", "intro", "personajes"];
   const heroRooms = mapHeroRoomsFor3D(data.heroRooms);
 
   return (
@@ -48,8 +48,8 @@ export function HomeExperience({ initialData, livePreview = false }: HomeExperie
             paraQueDesc2={data.settings?.para_que_desc2}
           />
         )}
-        {sections.includes("modelos") && (
-          <section id="modelos">
+        {sections.includes("personajes") && (
+          <section id="personajes">
             <Hero3DGallery
               siteTitle={data.settings?.site_title ?? undefined}
               tagline={data.settings?.tagline ?? undefined}

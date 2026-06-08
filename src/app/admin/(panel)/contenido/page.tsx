@@ -182,8 +182,8 @@ export default async function AdminContenidoPage() {
           />
           <input
             name="sections"
-            defaultValue={settings?.sections?.join(",") ?? "hero,intro,proyecto,modelos,masonry,videos,webgl,featured"}
-            placeholder="Secciones: hero,intro,proyecto,modelos,masonry,videos,webgl,featured"
+            defaultValue={settings?.sections?.join(",") ?? "hero,intro,proyecto,personajes,masonry,videos,webgl,featured"}
+            placeholder="Secciones: hero,intro,proyecto,personajes,masonry,videos,webgl,featured"
             className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
           />
           <button

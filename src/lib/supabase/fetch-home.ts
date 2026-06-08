@@ -23,7 +23,7 @@ export const defaultHomeData: HomePageData = {
     para_que: null,
     para_que_desc1: null,
     para_que_desc2: null,
-    sections: ["hero", "intro", "proyecto", "modelos", "masonry", "videos", "webgl", "featured"],
+    sections: ["hero", "intro", "proyecto", "personajes", "masonry", "videos", "webgl", "featured"],
     updated_at: new Date().toISOString(),
   },
   heroRooms: [
