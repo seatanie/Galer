@@ -141,7 +141,7 @@ export function GallerySlotsEditor({ galleryId, slots }: GallerySlotsEditorProps
                       )}
                       <button
                         onClick={() => handleDeleteItem(item.id)}
-                        className="absolute inset-0 flex items-center justify-center bg-black/60 opacity-0 transition-opacity group-hover:opacity-100"
+                        className="absolute inset-0 flex items-center justify-center bg-black/60 transition-opacity"
                         title="Eliminar"
                       >
                         <X className="h-4 w-4 text-white" />

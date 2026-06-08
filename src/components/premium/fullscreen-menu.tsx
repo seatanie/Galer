@@ -1,12 +1,31 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { gsap } from "@/animations/register-gsap";
 
-const links = [
+interface SubLink {
+  href: string;
+  label: string;
+}
+
+interface LinkItem {
+  href?: string;
+  label: string;
+  children?: SubLink[];
+}
+
+const links: LinkItem[] = [
   { href: "/#hero", label: "Home" },
-  { href: "/#intro", label: "Proyecto" },
+  {
+    label: "Proyecto",
+    children: [
+      { href: "/#quienes-somos", label: "¿Quiénes Somos?" },
+      { href: "/#por-que", label: "¿Por Qué?" },
+      { href: "/#para-que", label: "¿Para Qué?" },
+      { href: "/#intro", label: "Manifiesto" },
+    ],
+  },
   { href: "/#modelos", label: "Modelos" },
   { href: "/admin", label: "Admin" },
 ];
@@ -21,10 +40,12 @@ export function FullscreenMenu({ open, onClose }: FullscreenMenuProps) {
   const linksRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
   const timeline = useRef<gsap.core.Timeline | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
 
   const animateOut = useCallback(() => {
     if (!panelRef.current || !linksRef.current || !bgRef.current) return;
     if (timeline.current) timeline.current.kill();
+    setExpanded(null);
 
     const tl = gsap.timeline({
       defaults: { ease: "power3.inOut" },
@@ -69,6 +90,15 @@ export function FullscreenMenu({ open, onClose }: FullscreenMenuProps) {
     }
   }, [open, animateOut]);
 
+  const handleClick = (link: LinkItem) => {
+    if (link.children) {
+      setExpanded(expanded === link.label ? null : link.label);
+    } else {
+      animateOut();
+      setTimeout(onClose, 600);
+    }
+  };
+
   return (
     <div
       ref={panelRef}
@@ -96,20 +126,56 @@ export function FullscreenMenu({ open, onClose }: FullscreenMenuProps) {
       {/* Links */}
       <nav ref={linksRef} className="relative z-10 flex flex-col items-center gap-5 perspective-[1000px]">
         {links.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            onClick={() => {
-              animateOut();
-              setTimeout(onClose, 600);
-            }}
-            data-cursor
-            className="group relative font-serif text-5xl font-light text-white/80 transition-all duration-500 hover:text-violet-300 md:text-7xl"
-          >
-            <span className="relative inline-block transition-transform duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(196,181,253,0.3)]">
-              {link.label}
-            </span>
-          </Link>
+          <div key={link.label} className="flex flex-col items-center gap-2">
+            {link.href ? (
+              <Link
+                href={link.href}
+                onClick={() => handleClick(link)}
+                data-cursor
+                className="group relative font-serif text-5xl font-light text-white/80 transition-all duration-500 hover:text-violet-300 md:text-7xl"
+              >
+                <span className="relative inline-block transition-transform duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(196,181,253,0.3)]">
+                  {link.label}
+                </span>
+              </Link>
+            ) : (
+              <button
+                onClick={() => handleClick(link)}
+                data-cursor
+                className="group relative font-serif text-5xl font-light text-white/80 transition-all duration-500 hover:text-violet-300 md:text-7xl"
+              >
+                <span className="relative inline-block transition-transform duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_30px_rgba(196,181,253,0.3)]">
+                  {link.label}
+                </span>
+              </button>
+            )}
+
+            {/* Submenú */}
+            {link.children && (
+              <div
+                className={`flex flex-col items-center gap-2 overflow-hidden transition-all duration-500 ${
+                  expanded === link.label
+                    ? "max-h-40 opacity-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                {link.children.map((sub) => (
+                  <Link
+                    key={sub.href}
+                    href={sub.href}
+                    onClick={() => {
+                      animateOut();
+                      setTimeout(onClose, 600);
+                    }}
+                    data-cursor
+                    className="font-serif text-2xl font-light text-white/50 transition-all duration-300 hover:text-violet-300 md:text-3xl"
+                  >
+                    {sub.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
       </nav>
     </div>

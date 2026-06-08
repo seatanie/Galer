@@ -328,10 +328,10 @@ export function ModelSlotsEditor({ heroRoomId, slots }: ModelSlotsEditorProps) {
 
                           <button
                             onClick={() => handleDeleteItem(item.id)}
-                            className="flex-shrink-0 rounded-lg p-2 text-red-400 opacity-0 transition-all hover:bg-red-500/20 group-hover:opacity-100"
+                            className="flex-shrink-0 self-start rounded-lg bg-red-500/20 px-3 py-1.5 text-xs text-red-300 transition-all hover:bg-red-500/40"
                             title="Eliminar"
                           >
-                            <X className="h-4 w-4" />
+                            Eliminar
                           </button>
                         </div>
                       </div>

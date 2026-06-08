@@ -455,6 +455,15 @@ export async function updateSiteSettings(formData: FormData) {
       intro_title: formData.get("intro_title") as string,
       intro_subtitle: formData.get("intro_subtitle") as string,
       intro_text: formData.get("intro_text") as string,
+      quienes_somos: formData.get("quienes_somos") as string,
+      quienes_somos_desc1: formData.get("quienes_somos_desc1") as string,
+      quienes_somos_desc2: formData.get("quienes_somos_desc2") as string,
+      por_que: formData.get("por_que") as string,
+      por_que_desc1: formData.get("por_que_desc1") as string,
+      por_que_desc2: formData.get("por_que_desc2") as string,
+      para_que: formData.get("para_que") as string,
+      para_que_desc1: formData.get("para_que_desc1") as string,
+      para_que_desc2: formData.get("para_que_desc2") as string,
       sections,
       updated_at: new Date().toISOString(),
     })
@@ -464,4 +473,3 @@ export async function updateSiteSettings(formData: FormData) {
   revalidateAll();
   return { success: true };
 }
-

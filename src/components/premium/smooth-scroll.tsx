@@ -9,22 +9,27 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     registerGsap();
 
     const lenis = new Lenis({
-      duration: 1.15,
+      duration: 0.6,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      wheelMultiplier: 0.6,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
 
     function raf(time: number) {
-      lenis.raf(time);
+      try {
+        lenis.raf(time);
+      } catch {
+        // Si hay error, el loop sigue vivo
+      }
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
 
     ScrollTrigger.refresh();
 
-    // Exponer lenis globalmente para pausar/reanudar desde el modal
+    // Exponer lenis globalmente
     (window as any).__lenis = lenis;
 
     return () => {

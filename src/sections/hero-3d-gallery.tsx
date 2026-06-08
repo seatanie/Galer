@@ -3,7 +3,17 @@
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Play, Pause, Volume2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Volume2 } from "lucide-react";
+
+function SpeakerIcon({ className }: { className?: string }) {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M11 5L6 9H2v6h4l5 4V5z" />
+      <path d="M15.54 8.46a5 5 0 0 1 0 7.07" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export interface ModelSlot {
   id: string;
@@ -43,8 +53,8 @@ export function Hero3DGallery({
     rooms.length > 0
       ? rooms
       : [
-          { title: "Sala I", description: "Luz y sombra", accentColor: "#8b5cf6" },
-          { title: "Sala II", description: "Geometría viva", accentColor: "#d946ef" },
+          { title: "Sala I", shortTitle: "Luz", description: "Luz y sombra", accentColor: "#8b5cf6" },
+          { title: "Sala II", shortTitle: "Forma", description: "Geometría viva", accentColor: "#d946ef" },
         ];
 
   const [activeIndex, setActiveIndex] = useState(0);
@@ -79,7 +89,12 @@ export function Hero3DGallery({
     setActiveIndex(index);
     setSelectedModel(index);
     setTimeout(() => {
-      modelosRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      const lenis = (window as any).__lenis;
+      if (lenis) {
+        lenis.scrollTo(modelosRef.current, { offset: -50, duration: 1.2 });
+      } else {
+        modelosRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }, 100);
   }
 
@@ -163,6 +178,13 @@ export function Hero3DGallery({
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
                     </div>
+                    {room.shortTitle && (
+                      <p className={`mt-3 text-center tracking-wider text-white/50 ${
+                        isCenter ? "text-sm md:text-base" : "text-xs"
+                      }`}>
+                        {room.shortTitle}
+                      </p>
+                    )}
                   </motion.div>
                 );
               })}
@@ -197,50 +219,6 @@ export function Hero3DGallery({
             </button>
           </div>
 
-          {displayRooms[activeIndex]?.modelAudio && (
-            <div className="mt-12 flex items-center justify-center gap-4">
-              <button
-                onClick={toggleAudio}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-              >
-                {playing ? (
-                  <Pause className="h-5 w-5" />
-                ) : (
-                  <Play className="h-5 w-5" />
-                )}
-              </button>
-              <div className="text-left">
-                <p className="text-sm text-white">
-                  {displayRooms[activeIndex].modelAudio!.title ?? "Audio"}
-                </p>
-                {playing && (
-                  <p className="text-xs text-white/50">Reproduciendo...</p>
-                )}
-              </div>
-              <div className="flex items-center gap-2">
-                <Volume2 className="h-4 w-4 text-white/60" />
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={volume}
-                  onChange={(e) => {
-                    const v = parseFloat(e.target.value);
-                    setVolume(v);
-                    if (audioRef.current) audioRef.current.volume = v;
-                  }}
-                  className="h-1 w-24 cursor-pointer accent-violet-500"
-                />
-              </div>
-              <audio
-                ref={audioRef}
-                src={displayRooms[activeIndex].modelAudio!.audio_url}
-                onEnded={() => setPlaying(false)}
-              />
-            </div>
-          )}
-
           {heroSubtitle && (
             <p className="mx-auto mt-12 max-w-xl text-center text-white/50">{heroSubtitle}</p>
           )}
@@ -251,7 +229,8 @@ export function Hero3DGallery({
       <section
         ref={modelosRef}
         id="modelos-gallery"
-        className="bg-gradient-to-b from-black via-zinc-950 to-black py-20"
+        data-lenis-prevent
+        className="bg-gradient-to-b from-black via-zinc-950 to-black pt-48 pb-20"
       >
         {selectedModel === null ? (
           <div className="flex min-h-[60vh] items-center justify-center px-4">
@@ -261,12 +240,51 @@ export function Hero3DGallery({
           </div>
         ) : (
           <div className="mx-auto max-w-7xl px-4">
-            <div className="mb-16 text-center">
+            <div className="mb-12 text-center">
               <h2 className="font-serif text-4xl text-white md:text-5xl">
                 {currentRoom?.title}
               </h2>
               {currentRoom?.description && (
-                <p className="mt-3 text-white/60">{currentRoom.description}</p>
+                <p className="mx-auto mt-3 max-w-xl text-white/60">{currentRoom.description}</p>
+              )}
+              {currentRoom?.modelAudio && (
+                <div className="mt-8 flex items-center justify-center gap-4">
+                  <button
+                    onClick={toggleAudio}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                  >
+                    <SpeakerIcon className="h-6 w-6" />
+                  </button>
+                  <div className="text-left">
+                    <p className="text-sm text-white">
+                      {currentRoom.modelAudio.title ?? "Audio"}
+                    </p>
+                    {playing && (
+                      <p className="text-xs text-white/50">Reproduciendo...</p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Volume2 className="h-4 w-4 text-white/60" />
+                    <input
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value={volume}
+                      onChange={(e) => {
+                        const v = parseFloat(e.target.value);
+                        setVolume(v);
+                        if (audioRef.current) audioRef.current.volume = v;
+                      }}
+                      className="h-1 w-24 cursor-pointer accent-violet-500"
+                    />
+                  </div>
+                  <audio
+                    ref={audioRef}
+                    src={currentRoom.modelAudio.audio_url}
+                    onEnded={() => setPlaying(false)}
+                  />
+                </div>
               )}
             </div>
 
@@ -353,6 +371,7 @@ function SlotSection({
 
           <div
             ref={scrollRef}
+            data-lenis-prevent
             className="flex gap-4 overflow-x-auto overflow-y-hidden scrollbar-hide snap-x snap-mandatory"
             style={{ maxWidth: "460px" }}
           >

@@ -37,6 +37,15 @@ export function HomeExperience({ initialData, livePreview = false }: HomeExperie
             title={data.settings?.intro_title}
             subtitle={data.settings?.intro_subtitle}
             text={data.settings?.intro_text}
+            quienesSomos={data.settings?.quienes_somos}
+            quienesSomosDesc1={data.settings?.quienes_somos_desc1}
+            quienesSomosDesc2={data.settings?.quienes_somos_desc2}
+            porQue={data.settings?.por_que}
+            porQueDesc1={data.settings?.por_que_desc1}
+            porQueDesc2={data.settings?.por_que_desc2}
+            paraQue={data.settings?.para_que}
+            paraQueDesc1={data.settings?.para_que_desc1}
+            paraQueDesc2={data.settings?.para_que_desc2}
           />
         )}
         {sections.includes("modelos") && (

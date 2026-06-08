@@ -1,0 +1,4 @@
+ALTER TABLE public.site_settings
+ADD COLUMN IF NOT EXISTS quienes_somos TEXT,
+ADD COLUMN IF NOT EXISTS por_que TEXT,
+ADD COLUMN IF NOT EXISTS para_que TEXT;

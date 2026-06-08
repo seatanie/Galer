@@ -14,7 +14,16 @@ export const defaultHomeData: HomePageData = {
     intro_subtitle: "Un espacio curado para explorar proyectos visuales.",
     intro_text:
       "Explora una colección curada de modelos, imágenes y videos en un espacio digital inmersivo. Cada pieza cuenta una historia.",
-    sections: ["hero", "intro", "modelos", "masonry", "videos", "webgl", "featured"],
+    quienes_somos: null,
+    quienes_somos_desc1: null,
+    quienes_somos_desc2: null,
+    por_que: null,
+    por_que_desc1: null,
+    por_que_desc2: null,
+    para_que: null,
+    para_que_desc1: null,
+    para_que_desc2: null,
+    sections: ["hero", "intro", "proyecto", "modelos", "masonry", "videos", "webgl", "featured"],
     updated_at: new Date().toISOString(),
   },
   heroRooms: [

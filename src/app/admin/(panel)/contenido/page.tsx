@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { updateSiteSettings } from "@/lib/supabase/content-actions";
 import { VideoCreateForm } from "@/components/admin/video-create-form";
 import { HeroRoomForm } from "@/components/admin/hero-room-form";
-import { HeroSlidesForm } from "@/components/admin/hero-slides-form";
+import { HeroSlidesWrapper } from "@/components/admin/hero-slides-wrapper";
 import { ExternalLink, Images, Video, Settings, Database, Layers, Image as ImageIcon } from "lucide-react";
 
 export default async function AdminContenidoPage() {
@@ -63,7 +63,7 @@ export default async function AdminContenidoPage() {
           <ImageIcon className="h-5 w-5 text-violet-400" />
           Hero (Slideshow de inicio)
         </h2>
-        <HeroSlidesForm slides={(slides ?? []) as any} />
+        <HeroSlidesWrapper slides={(slides ?? []) as any} />
       </section>
 
       <section className="rounded-2xl border border-white/10 bg-white/5 p-6">
@@ -116,10 +116,74 @@ export default async function AdminContenidoPage() {
             rows={3}
             className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
           />
+          <h3 className="mt-6 text-sm font-medium text-white/50">Proyecto</h3>
+          <textarea
+            name="quienes_somos"
+            defaultValue={settings?.quienes_somos ?? ""}
+            placeholder="¿Quiénes Somos? (título)"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="quienes_somos_desc1"
+            defaultValue={settings?.quienes_somos_desc1 ?? ""}
+            placeholder="Descripción 1"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="quienes_somos_desc2"
+            defaultValue={settings?.quienes_somos_desc2 ?? ""}
+            placeholder="Descripción 2"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="por_que"
+            defaultValue={settings?.por_que ?? ""}
+            placeholder="¿Por Qué? (título)"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="por_que_desc1"
+            defaultValue={settings?.por_que_desc1 ?? ""}
+            placeholder="Descripción 1"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="por_que_desc2"
+            defaultValue={settings?.por_que_desc2 ?? ""}
+            placeholder="Descripción 2"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="para_que"
+            defaultValue={settings?.para_que ?? ""}
+            placeholder="¿Para Qué? (título)"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="para_que_desc1"
+            defaultValue={settings?.para_que_desc1 ?? ""}
+            placeholder="Descripción 1"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
+          <textarea
+            name="para_que_desc2"
+            defaultValue={settings?.para_que_desc2 ?? ""}
+            placeholder="Descripción 2"
+            rows={2}
+            className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
+          />
           <input
             name="sections"
-            defaultValue={settings?.sections?.join(",") ?? "hero,intro,modelos,masonry,videos,webgl,featured"}
-            placeholder="Secciones: hero,intro,masonry,videos,webgl,featured"
+            defaultValue={settings?.sections?.join(",") ?? "hero,intro,proyecto,modelos,masonry,videos,webgl,featured"}
+            placeholder="Secciones: hero,intro,proyecto,modelos,masonry,videos,webgl,featured"
             className="rounded-lg border border-white/10 bg-black/40 px-4 py-3 text-white"
           />
           <button

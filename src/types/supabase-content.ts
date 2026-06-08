@@ -7,6 +7,15 @@ export interface SiteSettings {
   intro_title: string | null;
   intro_subtitle: string | null;
   intro_text: string | null;
+  quienes_somos: string | null;
+  quienes_somos_desc1: string | null;
+  quienes_somos_desc2: string | null;
+  por_que: string | null;
+  por_que_desc1: string | null;
+  por_que_desc2: string | null;
+  para_que: string | null;
+  para_que_desc1: string | null;
+  para_que_desc2: string | null;
   sections: string[] | null;
   updated_at: string;
 }
