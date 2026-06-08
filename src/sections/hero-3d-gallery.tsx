@@ -45,7 +45,7 @@ interface Hero3DGalleryProps {
 export function Hero3DGallery({
   siteTitle,
   tagline,
-  heroTitle = "Experiencias inmersivas",
+  heroTitle = "Personajes",
   heroSubtitle,
   rooms,
 }: Hero3DGalleryProps) {
