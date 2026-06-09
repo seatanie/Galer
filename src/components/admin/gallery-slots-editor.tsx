@@ -27,7 +27,7 @@ interface GallerySlotsEditorProps {
   slots: GallerySlotData[];
 }
 
-const SLOT_LABELS = ["Foto principal 1", "Foto principal 2", "Foto principal 3"];
+const SLOT_LABELS = ["Antes", "Durante", "Después"];
 
 export function GallerySlotsEditor({ galleryId, slots }: GallerySlotsEditorProps) {
   const router = useRouter();

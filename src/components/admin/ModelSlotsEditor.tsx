@@ -178,7 +178,7 @@ export function ModelSlotsEditor({ heroRoomId, slots }: ModelSlotsEditorProps) {
               ) : (
                 <p className="text-lg font-semibold text-violet-300">
                   <ImageIcon className="mr-2 inline h-5 w-5" />
-                  {slot.title ?? `Portada ${slot.slot_index + 1}`}
+                  {slot.title ?? ["Antes", "Durante", "Después"][slot.slot_index] ?? `Portada ${slot.slot_index + 1}`}
                   <button
                     onClick={() => {
                       setEditingSlotTitle(slot.slot_index);

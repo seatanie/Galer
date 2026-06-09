@@ -349,7 +349,7 @@ function SlotSection({
     <div className="flex flex-col items-center space-y-6">
       <div className="text-center">
         <h3 className="font-serif text-3xl text-white md:text-4xl">
-          {slot.title ?? `Portada ${slot.slotIndex + 1}`}
+          {slot.title ?? ["Antes", "Durante", "Después"][slot.slotIndex] ?? `Portada ${slot.slotIndex + 1}`}
         </h3>
         <p className="mt-2 text-sm text-white/60">
           {currentIndex + 1} / {allImages.length}
